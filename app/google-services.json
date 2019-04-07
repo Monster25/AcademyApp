@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "1006952216753",
+    "firebase_url": "https://drivingacademy-7dd1e.firebaseio.com",
+    "project_id": "drivingacademy-7dd1e",
+    "storage_bucket": "drivingacademy-7dd1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006952216753:android:5d60230ccc2ff365",
+        "android_client_info": {
+          "package_name": "com.application.academy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006952216753-46qo9ct5d6e86l1jf7s9qfda036mi9bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.application.academy",
+            "certificate_hash": "abd4412f6d0fc4470da6e2089168183b8b48b789"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzsB-8aOdFPY9MxPSiL-V8U0AIUU95PFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006952216753-600r2978gape2t1olug9tvd1bi7am6qr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
