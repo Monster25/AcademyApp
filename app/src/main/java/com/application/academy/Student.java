@@ -5,13 +5,11 @@ import com.google.firebase.database.Exclude;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Student {
-    //Exclude actual incrementer from database
-    @Exclude
-    private static final AtomicInteger incrementer = new AtomicInteger(-1); //id incrementer
+
 
     private int id;
     private String name;
-    private boolean payed;
+    private boolean paid;
     private int sessions;
 
     public Student()
@@ -19,12 +17,12 @@ public class Student {
 
     }
 
-    public Student(String name, boolean payed, int sessions)
+    public Student(String name, boolean paid, int sessions, int id)
     {
         this.name = name;
-        this.payed = payed;
+        this.paid = paid;
         this.sessions = sessions;
-        id = incrementer.incrementAndGet(); //increment id
+        this.id = id;
     }
 
     public int getId()
@@ -37,9 +35,9 @@ public class Student {
         return name;
     }
 
-    public boolean getPayed()
+    public boolean getPaid()
     {
-        return payed;
+        return paid;
     }
 
     public int getSessions()

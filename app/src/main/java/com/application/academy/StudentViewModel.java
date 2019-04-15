@@ -11,11 +11,17 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 public class StudentViewModel extends ViewModel {
-    private static final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/Students/Student0");
+
+    private static final String refString = "Students";
+    private static final String childRefString = "Student";
+    private static final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/"+refString);
 
     private final FirebaseQueryLiveData liveData = new FirebaseQueryLiveData(ref);
 
+    private final FirebaseAdapter adapter = FirebaseAdapter.getInstance();
+
     private final LiveData<Student> studentLiveData = Transformations.map(liveData, new Deserializer());
+
 
     private class Deserializer implements Function<DataSnapshot, Student>
     {
@@ -32,6 +38,29 @@ public class StudentViewModel extends ViewModel {
         return studentLiveData;
     }
 
+    @NonNull
+    public StudentList getStudentList() {
+        return adapter.makeStudentList(liveData.getValue());
+    }
 
+    @NonNull
+    public void addStudent(String studentName, boolean paid, int sessionNumber, int id)
+    {
+        Student student = new Student(studentName, paid, sessionNumber, id);
+        ref.child(childRefString+id).setValue(student);
+    }
+
+    @NonNull
+    public void removeStudent(String child)
+    {
+        ref.child(child).removeValue();
+    }
+
+    @NonNull
+    public void setStudent(String studentName, boolean paid, int sessionNumber, int id)
+    {
+        Student student = new Student(studentName, paid, sessionNumber, id);
+        ref.child(childRefString+id).setValue(student);
+    }
 
 }
