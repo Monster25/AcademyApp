@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/menu_agenda"
+        android:title="Agenda"
+        android:icon="@mipmap/ic_navigation_foreground"
+        />
+    <item
+        android:id="@+id/menu_students"
+        android:title="Students"
+        android:icon="@mipmap/ic_students_foreground" />
 </menu>
