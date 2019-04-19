@@ -1,4 +1,4 @@
-package com.application.academy;
+package com.application.academy.views.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,11 +9,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.application.academy.firebase.FirebaseAdapter;
+import com.application.academy.R;
+import com.application.academy.model.Student;
+import com.application.academy.model.StudentList;
+import com.application.academy.viewmodel.StudentViewModel;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.Calendar;
 
 public class AgendaFragment extends Fragment {
     Button sendButton, removeButton, setButton;
@@ -21,16 +29,21 @@ public class AgendaFragment extends Fragment {
     CheckBox paid, paid2;
     TextView example, example2, example3;
 
+    public static final String KEY_ITEM = "unique_key";
+    public static final String KEY_INDEX = "index_key";
+    private String mTime;
+
     private StudentList studentList;
     private int lastId = -1;
-    private StudentList students;
     private FirebaseAdapter adapter;
     private StudentViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.agenda_fragment, parent, false);
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -51,9 +64,7 @@ public class AgendaFragment extends Fragment {
 
 
         viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
-
         LiveData<Student> studentLiveData = viewModel.getStudentLiveData();
-        adapter = FirebaseAdapter.getInstance();
 
         studentLiveData.observe(this, new Observer<Student>()
         {
@@ -64,7 +75,7 @@ public class AgendaFragment extends Fragment {
                     studentList = viewModel.getStudentList();
                     lastId = studentList.getLastStudent().getId();
 
-                    example.setText(studentList.getStudent(0).getName());
+                    //button.setText(studentList.getStudent(0).getName());
                     // example.setText(studentList.getStudent(0).getName());
                     // example2.setText(studentList.getStudent(1).getName());
                     // example3.setText(studentList.getStudent(2).getName());
@@ -72,7 +83,6 @@ public class AgendaFragment extends Fragment {
                 }
             }
         });
-
         //add student
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,4 +1,4 @@
-package com.application.academy;
+package com.application.academy.firebase;
 
 import android.util.Log;
 

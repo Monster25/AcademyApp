@@ -1,5 +1,9 @@
-package com.application.academy;
+package com.application.academy.viewmodel;
 
+import com.application.academy.firebase.FirebaseAdapter;
+import com.application.academy.firebase.FirebaseQueryLiveData;
+import com.application.academy.model.Student;
+import com.application.academy.model.StudentList;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

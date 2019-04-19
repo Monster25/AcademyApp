@@ -1,29 +1,27 @@
-package com.application.academy;
+package com.application.academy.views;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 
+import com.application.academy.views.fragments.AgendaFragment;
+import com.application.academy.firebase.FirebaseAdapter;
+import com.application.academy.R;
+import com.application.academy.model.StudentList;
+import com.application.academy.views.fragments.StudentsFragment;
+import com.application.academy.viewmodel.StudentViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private StudentList students;
     private FirebaseAdapter adapter;
     private StudentViewModel viewModel;
+    private String COMMON_TAG;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         bottomNav = findViewById(R.id.bottom_navigation);
@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+
+        //Default fragment
     displayView(R.id.menu_agenda);
 
 
@@ -65,21 +69,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void displayView(int viewId)
-    {
+    public void displayView(int viewId) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
-
-        switch (viewId)
-        {
+        String tag = "";
+        switch (viewId) {
             case R.id.menu_students:
                 fragment = new StudentsFragment();
                 title = "Students";
+                tag = "students_tag";
                 break;
 
             case R.id.menu_agenda:
                 fragment = new AgendaFragment();
                 title = "Agenda";
+                tag = "agenda_tag";
                 break;
 
             default:
@@ -87,16 +91,31 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        if (fragment!=null)
-        {
+
+        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragmentPlaceholder, fragment);
-            ft.commit();
+             ft.commit();
+             setTitle(title);
         }
-
     }
 
 
+
+        @Override
+    public void onConfigurationChanged(Configuration newConfig)
+        {
+                super.onConfigurationChanged(newConfig);
+                if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                {
+                    Log.i(COMMON_TAG, "landscape");
+
+                }
+                else if (newConfig.orientation==Configuration.ORIENTATION_PORTRAIT)
+                {
+                    Log.i(COMMON_TAG, "portrait");
+                }
+        }
 
 
 }

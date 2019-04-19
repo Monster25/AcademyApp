@@ -1,4 +1,6 @@
-package com.application.academy;
+package com.application.academy.model;
+
+import com.application.academy.model.Student;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.application.academy;
+package com.application.academy.model;
 
 import com.google.firebase.database.Exclude;
 

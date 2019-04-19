@@ -1,7 +1,7 @@
-package com.application.academy;
+package com.application.academy.firebase;
 
-import android.provider.ContactsContract;
-
+import com.application.academy.model.Student;
+import com.application.academy.model.StudentList;
 import com.google.firebase.database.DataSnapshot;
 
 public class FirebaseAdapter {
