@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import androidx.appcompat.widget.Toolbar;
 
 import com.application.academy.views.fragments.AgendaFragment;
 import com.application.academy.firebase.FirebaseAdapter;
@@ -28,21 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     BottomNavigationView bottomNav;
-
-    //Exclude actual incrementer from database
-    @Exclude
-    public final static AtomicInteger incrementer = new AtomicInteger(-1); //id incrementer
-
-    private StudentList studentList;
-    private int lastId = -1;
-    private StudentList students;
-    private FirebaseAdapter adapter;
-    private StudentViewModel viewModel;
+    Toolbar topNav;
     private String COMMON_TAG;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        topNav =  findViewById(R.id.app_toolbar);
+        setSupportActionBar(topNav);
+
 
 
 
@@ -65,6 +62,34 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.top_navigation_items,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.action_settings:
+                //User chooses the "Settings" item, show the app settings UI
+                return true;
+
+            case R.id.action_favorite:
+                //User chooses the "Favorite" action, mark the current item
+                //as favorite
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
 
     }
