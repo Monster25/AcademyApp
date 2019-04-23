@@ -23,6 +23,23 @@
             android:layout_height="match_parent">
         </FrameLayout>
 
+        <View
+            android:id="@+id/fadeBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layerType="hardware"
+            android:alpha="0"
+            android:visibility="visible"
+            android:background="@android:color/black">
+
+        </View>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/addStudentFragmentPlaceholder">
+        </FrameLayout>
+
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

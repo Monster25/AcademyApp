@@ -1,13 +1,18 @@
 package com.application.academy.views;
 
+import android.animation.Animator;
 import android.content.res.Configuration;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+
 import androidx.appcompat.widget.Toolbar;
 
+import com.application.academy.views.fragments.AddStudentFragment;
 import com.application.academy.views.fragments.AgendaFragment;
 import com.application.academy.firebase.FirebaseAdapter;
 import com.application.academy.R;
@@ -23,6 +28,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,12 +40,19 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNav;
     Toolbar topNav;
+    private StudentViewModel viewModel;
     private String COMMON_TAG;
-
+    private View fadeBackground;
+    private FrameLayout mainFragmentLayout, addStudentFragmentLayout;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
+        mainFragmentLayout = findViewById(R.id.fragmentPlaceholder);
+        addStudentFragmentLayout = findViewById(R.id.addStudentFragmentPlaceholder);
+        fadeBackground = findViewById(R.id.fadeBackground);
 
         topNav =  findViewById(R.id.app_toolbar);
         setSupportActionBar(topNav);
@@ -72,28 +89,38 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.top_navigation_items,menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+    //Top bar item selection
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        Fragment fragment = null;
         switch(item.getItemId())
         {
             case R.id.action_settings:
                 //User chooses the "Settings" item, show the app settings UI
+                fragment = new AddStudentFragment();
                 return true;
 
             case R.id.action_favorite:
-                //User chooses the "Favorite" action, mark the current item
-                //as favorite
+                //Add addStudent Fragment but check if it already exists.
+                fragment = getSupportFragmentManager().findFragmentById(R.id.addStudentFragmentPlaceholder);
+                if (fragment instanceof AddStudentFragment);
+                else
+            {
+                fadeBackground();
+                fragment = new AddStudentFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.addStudentFragmentPlaceholder, fragment);
+                ft.commit();
+            }
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-
     }
 
+    //Bottom Nav Fragment Navigation
     public void displayView(int viewId) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
@@ -116,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
+        //Switch to that fragment
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragmentPlaceholder, fragment);
@@ -126,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+//Keep fragments from resetting due to orientation
         @Override
     public void onConfigurationChanged(Configuration newConfig)
         {
@@ -141,6 +168,46 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(COMMON_TAG, "portrait");
                 }
         }
+        public StudentViewModel getViewModel()
+        {
+            return viewModel;
+        }
+
+        //Fade background between the two fragments
+
+        public void fadeBackground()
+        {
+            //fadeBackground.setVisibility(View.VISIBLE);
+           // fadeBackground.setAlpha(0f);
+            addStudentFragmentLayout.setClickable(true);
+            bottomNav.setVisibility(GONE);
+            fadeBackground.animate().alpha(0.5f); //grey out value
+
+        }
+
+        public void unFadeBackground()
+        {
+            //ANIMATION - NEED TESTING
+            //fadeBackground.setAlpha(0.5f);
+            addStudentFragmentLayout.setClickable(false);
+            bottomNav.setVisibility(VISIBLE);
+            fadeBackground.animate().alpha(0.0f);
+        }
 
 
+        //Make sure app doesn't close due to pressing back.
+    @Override
+    public void onBackPressed()
+    {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.addStudentFragmentPlaceholder);
+        if (fragment instanceof AddStudentFragment)
+        {
+            unFadeBackground();
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
 }

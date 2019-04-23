@@ -27,10 +27,6 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot>
         this.query = database;
     }
 
-    public void addStudent()
-    {
-
-    }
 
     @Override
     protected void onActive()

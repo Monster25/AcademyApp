@@ -14,6 +14,7 @@ import com.application.academy.R;
 import com.application.academy.model.Student;
 import com.application.academy.model.StudentList;
 import com.application.academy.viewmodel.StudentViewModel;
+import com.application.academy.views.MainActivity;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -62,8 +63,7 @@ public class AgendaFragment extends Fragment {
         sessionNumbers2 = view.findViewById(R.id.sessionNumbers2);
         paid2 = view.findViewById(R.id.paid2);
 
-
-        viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
+        viewModel = ((MainActivity) getActivity()).getViewModel();
         LiveData<Student> studentLiveData = viewModel.getStudentLiveData();
 
         studentLiveData.observe(this, new Observer<Student>()
@@ -73,7 +73,7 @@ public class AgendaFragment extends Fragment {
                 if (student!=null)
                 {
                     studentList = viewModel.getStudentList();
-                    lastId = studentList.getLastStudent().getId();
+                  //  lastId = studentList.getLastStudent().getId();
 
                     //button.setText(studentList.getStudent(0).getName());
                     // example.setText(studentList.getStudent(0).getName());
