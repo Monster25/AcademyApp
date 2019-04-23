@@ -1,19 +1,27 @@
 package com.application.academy.views.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.application.academy.R;
 import com.application.academy.viewmodel.StudentViewModel;
 import com.application.academy.views.MainActivity;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class AddStudentFragment extends Fragment {
 
@@ -53,14 +61,32 @@ public class AddStudentFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lastId = viewModel.getStudentList().getLastStudent().getId();
-                viewModel.addStudent(studentName.getText().toString(), paid.isChecked(), Integer.parseInt(sessions.getText().toString()), lastId+1);
-                studentName.setText("");
-                paid.setChecked(false);
-                sessions.setText("");
-                ((MainActivity) getActivity()).unFadeBackground();
-                getFragmentManager().beginTransaction().remove(AddStudentFragment.this).commit();
+                if (studentName.getText().toString().matches(""))
+                {
+                    Toast.makeText(getActivity(),"Please enter a name.", Toast.LENGTH_SHORT).show();
+                }
+                else if (sessions.getText().toString().matches(""))
+                {
+                    Toast.makeText(getActivity(), "Please enter a number of sessions.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    try {
+                        lastId = viewModel.getStudentList().getLastStudent().getId();
+                    } catch (Exception e) {
+                        lastId = -1;
+                    }
 
+                    viewModel.addStudent(studentName.getText().toString(), paid.isChecked(), Integer.parseInt(sessions.getText().toString()), lastId + 1);
+                    studentName.setText("");
+                    paid.setChecked(false);
+                    sessions.setText("");
+                    //Hide Keyboard
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+                //Unfade background and remove current fragment
+                    ((MainActivity) getActivity()).unFadeBackground();
+                    getFragmentManager().beginTransaction().remove(AddStudentFragment.this).commit();
+                }
             }
         });
 
@@ -69,6 +95,10 @@ public class AddStudentFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
+                //Hide Keyboard
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+
                 ((MainActivity) getActivity()).unFadeBackground();
                 getFragmentManager().beginTransaction().remove(AddStudentFragment.this).commit();
 

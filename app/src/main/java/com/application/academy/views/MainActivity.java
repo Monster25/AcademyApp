@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("Driving Academy");
+
         viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
         mainFragmentLayout = findViewById(R.id.fragmentPlaceholder);
         addStudentFragmentLayout = findViewById(R.id.addStudentFragmentPlaceholder);
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragmentPlaceholder, fragment);
              ft.commit();
-             setTitle(title);
+             //setTitle(title);
         }
     }
 

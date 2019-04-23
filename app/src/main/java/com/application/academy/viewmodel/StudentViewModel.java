@@ -48,6 +48,17 @@ public class StudentViewModel extends ViewModel {
     }
 
     @NonNull
+    public boolean isStudentList()
+    {
+        if (liveData.getValue() == null)
+        {
+            return false;
+        }
+        else
+            return true;
+    }
+
+    @NonNull
     public void addStudent(String studentName, boolean paid, int sessionNumber, int id)
     {
         Student student = new Student(studentName, paid, sessionNumber, id);

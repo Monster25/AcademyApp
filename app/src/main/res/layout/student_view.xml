@@ -5,24 +5,20 @@
     android:id="@+id/container"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:layout_height="80dp"
     android:background="#e4e4e4"
     tools:context=".views.MainActivity">
 
     <TextView
         android:id="@+id/student_name"
         android:layout_width="match_parent"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_height="match_parent"
-        android:text="Student" />
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_agenda"/>
-
-
+        android:layout_weight="1"
+        android:gravity="center_vertical|right"
+        android:text="Student"
+        android:textAlignment="center"
+        android:textSize="22sp" />
 </LinearLayout>

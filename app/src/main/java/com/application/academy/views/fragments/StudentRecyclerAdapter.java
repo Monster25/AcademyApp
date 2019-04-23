@@ -42,12 +42,10 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
-        ImageView icon;
         ViewHolder(View itemView)
         {
             super(itemView);
             name = itemView.findViewById(R.id.student_name);
-            icon = itemView.findViewById(R.id.icon);
         }
     }
 

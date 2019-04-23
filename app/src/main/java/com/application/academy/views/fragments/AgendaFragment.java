@@ -48,7 +48,9 @@ public class AgendaFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        viewModel = ((MainActivity) getActivity()).getViewModel();
         //Interactable UI assignments
+        /*
         studentName = view.findViewById(R.id.nameField);
         sessionNumbers = view.findViewById(R.id.sessionNumbers);
         paid = view.findViewById(R.id.paid);
@@ -63,7 +65,7 @@ public class AgendaFragment extends Fragment {
         sessionNumbers2 = view.findViewById(R.id.sessionNumbers2);
         paid2 = view.findViewById(R.id.paid2);
 
-        viewModel = ((MainActivity) getActivity()).getViewModel();
+
         LiveData<Student> studentLiveData = viewModel.getStudentLiveData();
 
         studentLiveData.observe(this, new Observer<Student>()
@@ -83,6 +85,8 @@ public class AgendaFragment extends Fragment {
                 }
             }
         });
+        */
+        /*
         //add student
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,5 +125,6 @@ public class AgendaFragment extends Fragment {
                 sessionNumbers2.setText("");
             }
         });
+        */
     }
 }
