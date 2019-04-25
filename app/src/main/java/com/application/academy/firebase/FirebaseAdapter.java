@@ -20,15 +20,19 @@ public class FirebaseAdapter {
     public StudentList makeStudentList(DataSnapshot dataSnapshot)
     {
         StudentList studentList = new StudentList();
-        for(DataSnapshot snapshot : dataSnapshot.getChildren())
-        {
-            Student student = new Student(snapshot.getValue(Student.class).getName(),
-                    snapshot.getValue(Student.class).getPaid(),
-                    snapshot.getValue(Student.class).getSessions(),
-                    snapshot.getValue(Student.class).getId());
-            studentList.addStudent(student);
+        if (dataSnapshot != null) {
+
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                Student student = new Student(snapshot.getValue(Student.class).getName(),
+                        snapshot.getValue(Student.class).getPaid(),
+                        snapshot.getValue(Student.class).getSessions(),
+                        snapshot.getValue(Student.class).getId());
+                studentList.addStudent(student);
+            }
+            return studentList;
         }
-        return studentList;
+        else
+            return studentList = null;
     }
 
 }

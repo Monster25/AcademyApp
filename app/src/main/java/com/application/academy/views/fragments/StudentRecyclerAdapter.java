@@ -9,7 +9,10 @@ import android.widget.TextView;
 import com.application.academy.R;
 import com.application.academy.model.Student;
 import com.application.academy.model.StudentList;
+import com.application.academy.views.MainActivity;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,11 +21,14 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
 
     private ArrayList<Student> students;
     private StudentList studentList;
+    private Fragment fragment;
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.student_view, parent, false);
+
+
         return new ViewHolder(view);
     }
 
@@ -46,6 +52,7 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         {
             super(itemView);
             name = itemView.findViewById(R.id.student_name);
+
         }
     }
 

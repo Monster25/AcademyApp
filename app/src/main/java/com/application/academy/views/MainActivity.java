@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("Driving Academy");
 
-        viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
+            viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
         mainFragmentLayout = findViewById(R.id.fragmentPlaceholder);
         addStudentFragmentLayout = findViewById(R.id.addStudentFragmentPlaceholder);
         fadeBackground = findViewById(R.id.fadeBackground);

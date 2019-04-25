@@ -14,6 +14,7 @@ import com.application.academy.views.MainActivity;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -46,15 +47,43 @@ public class StudentsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-       // button = view.findViewById(R.id.button);
 
         studentsView = view.findViewById(R.id.rv);
 
         studentsView.setHasFixedSize(true);
 
-       // layoutManager = new LinearLayoutManager(this.getActivity());
-        studentsView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        LinearLayoutManager manager = new LinearLayoutManager(this.getActivity());
+        studentsView.setLayoutManager(manager);
 
+        studentsView.addOnItemTouchListener(new StudentRecyclerItemClickListener(getContext(), studentsView, new StudentRecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Fragment fragment = getFragmentManager().findFragmentById(R.id.addStudentFragmentPlaceholder);
+                if (fragment instanceof SetStudentFragment);
+                else
+                {
+                    ((MainActivity) getActivity()).fadeBackground();
+                    fragment = new SetStudentFragment();
+                    Bundle args = new Bundle();
+                    args.putInt("position", position);
+                    args.putString("name", studentList.getStudent(position).getName());
+                    args.putInt("sessions", studentList.getStudent(position).getSessions());
+                    args.putBoolean("paid", studentList.getStudent(position).getPaid());
+                    args.putInt("id", studentList.getStudent(position).getId());
+                    fragment.setArguments(args);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.addStudentFragmentPlaceholder, fragment);
+                    ft.commit();
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
+
+        manager.setStackFromEnd(true);
 
         viewModel = ((MainActivity) getActivity()).getViewModel();
 
@@ -64,33 +93,15 @@ public class StudentsFragment extends Fragment {
         {
             public void onChanged(@Nullable Student student)
             {
-                if (student!=null)
-                {
                     studentList = viewModel.getStudentList();
-                    //lastId = studentList.getLastStudent().getId();
+                    if (studentList != null) {
+                        studentsViewAdapter = new StudentRecyclerAdapter(studentList);
+                        studentsView.setAdapter(studentsViewAdapter);
+                    }
 
-                     //button.setText(studentList.getStudent(0).getName());
-
-                     studentsViewAdapter = new StudentRecyclerAdapter(studentList);
-                     studentsView.setAdapter(studentsViewAdapter);
-                    // example.setText(studentList.getStudent(0).getName());
-                    // example2.setText(studentList.getStudent(1).getName());
-                    // example3.setText(studentList.getStudent(2).getName());
-                    // example.setText(dataSnapshot.child("Student1").getValue(Student.class).getName());
-                }
             }
         });
 
-      //  ArrayList<Student> students = new ArrayList<>();
-       // students.add(new Student("Shize", true, 123,3 ));
-
-
-
-
-
-       // studentList.addStudent(new Student("gadaf", true, 222, 2));
-        //studentsViewAdapter = new StudentRecyclerAdapter(studentList);
-        //studentsView.setAdapter(studentsViewAdapter);
     }
 
 
