@@ -53,6 +53,7 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentRecycler
         }
     }
 
+
     public StudentRecyclerAdapter(StudentList studentList)
     {
         this.studentList = studentList;

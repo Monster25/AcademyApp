@@ -57,7 +57,7 @@ public class SetStudentFragment extends Fragment {
         studentName = view.findViewById(R.id.nameField);
         sessions = view.findViewById(R.id.sessionNumbers);
         paid = view.findViewById(R.id.paid);
-        setButton = view.findViewById(R.id.setStudentButton);
+        setButton = view.findViewById(R.id.setSessionButton);
         cancelButton = view.findViewById(R.id.cancelButton);
         delete = view.findViewById(R.id.deleteIcon);
         viewModel = ((MainActivity) getActivity()).getViewModel();

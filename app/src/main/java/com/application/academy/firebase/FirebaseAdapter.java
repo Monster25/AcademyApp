@@ -1,5 +1,7 @@
 package com.application.academy.firebase;
 
+import com.application.academy.model.Session;
+import com.application.academy.model.SessionList;
 import com.application.academy.model.Student;
 import com.application.academy.model.StudentList;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +35,28 @@ public class FirebaseAdapter {
         }
         else
             return studentList = null;
+    }
+
+    public SessionList makeSessionList(DataSnapshot dataSnapshot, String date)
+    {
+        SessionList sessionList = new SessionList();
+        if (dataSnapshot != null)
+        {
+            for (DataSnapshot snapshot : dataSnapshot.getChildren())
+            {
+                if (snapshot.getValue(Session.class).getDate().matches(date)) {
+                    Session session = new Session(snapshot.getValue(Session.class)
+                            .getId(),
+                            snapshot.getValue(Session.class).getTime(),
+                            snapshot.getValue(Session.class).getDate(),
+                            snapshot.getValue(Session.class).getStudentId());
+                    sessionList.addSession(session);
+                }
+            }
+            return sessionList;
+        }
+        else
+            return sessionList = null;
     }
 
 }

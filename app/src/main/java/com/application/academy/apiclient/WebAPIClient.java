@@ -2,6 +2,8 @@ package com.application.academy.apiclient;
 
 import android.os.AsyncTask;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.database.DatabaseError;
 
 import org.json.JSONException;
@@ -20,8 +22,10 @@ public class WebAPIClient {
 
     public String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
+
         if (url == null)
             return jsonResponse;
+           // return liveResponseData;
 
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
@@ -47,8 +51,9 @@ public class WebAPIClient {
                 inputStream.close();
             }
         }
-        return jsonResponse;
 
+        return jsonResponse;
+        //return liveResponseData;
 
     }
 
@@ -74,12 +79,15 @@ public class WebAPIClient {
         protected String doInBackground(String... strings) {
             URL url = null;
             String jsonResponse = "";
+
             try {
                 url = new URL(strings[0]);
                 jsonResponse = makeHttpRequest(url);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
             return jsonResponse;
         }
 

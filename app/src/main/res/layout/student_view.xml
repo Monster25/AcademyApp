@@ -10,6 +10,8 @@
     android:background="#e4e4e4"
     tools:context=".views.activities.MainActivity">
 
+
+
     <TextView
         android:id="@+id/student_name"
         android:layout_width="match_parent"
@@ -21,4 +23,5 @@
         android:text="Student"
         android:textAlignment="center"
         android:textSize="22sp" />
+
 </LinearLayout>

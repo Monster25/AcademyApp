@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.application.academy.R;
 import com.application.academy.model.Student;
@@ -33,6 +34,7 @@ public class StudentsFragment extends Fragment {
     private int lastId = -1;
     private StudentList studentList;
     private Button button;
+    private TextView noStudent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
@@ -44,6 +46,7 @@ public class StudentsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
+        noStudent = view.findViewById(R.id.noStudent);
 
         studentsView = view.findViewById(R.id.rv);
 
@@ -94,8 +97,15 @@ public class StudentsFragment extends Fragment {
                     if (studentList != null) {
                         studentsViewAdapter = new StudentRecyclerAdapter(studentList);
                         studentsView.setAdapter(studentsViewAdapter);
+
                     }
 
+                if (studentList.size() == 0 || studentList == null)
+                    noStudent.setVisibility(View.VISIBLE);
+                else
+                {
+                    noStudent.setVisibility(View.GONE);
+                }
             }
         });
 

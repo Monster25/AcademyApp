@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_favorite"
-        android:title="Favorite"
+        android:title="Add Session"
         android:icon="@mipmap/ic_add"
         app:showAsAction="ifRoom"
         />

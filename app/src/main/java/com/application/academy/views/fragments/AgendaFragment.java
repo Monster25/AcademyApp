@@ -14,12 +14,16 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import com.application.academy.R;
+import com.application.academy.model.Student;
 import com.application.academy.viewmodel.StudentViewModel;
 import com.application.academy.views.activities.DateActivity;
 import com.application.academy.views.activities.MainActivity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import org.json.JSONException;
 
@@ -33,6 +37,7 @@ public class AgendaFragment extends Fragment {
     TextView tempDisplay;
     CalendarView calendarView;
     public static AgendaFragment instance;
+
 
     public static final String KEY_ITEM = "unique_key";
     public static final String KEY_INDEX = "index_key";
@@ -55,6 +60,7 @@ public class AgendaFragment extends Fragment {
         viewModel = ((MainActivity) getActivity()).getViewModel();
         //Interactable UI assignments
         tempDisplay = view.findViewById(R.id.temp);
+        //tempDisplay.setText("Temperature: "+getFromSharedPreferences("temp", "999"));
         calendarView = view.findViewById(R.id.calendarView);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -64,6 +70,7 @@ public class AgendaFragment extends Fragment {
             Log.d("CalendarActivity", "onSelectedDayChange: dd/mm/yyyy" + date);
             Intent intent = new Intent(MainActivity.getInstance(),DateActivity.class);
             intent.putExtra("date", date);
+          //  intent.putExtra("toolbar",MainActivity.getInstance().getTopNav());
             startActivity(intent);
             }
         });
@@ -79,6 +86,16 @@ public class AgendaFragment extends Fragment {
             }
         });
 
+    //Observe temperature data
+        MutableLiveData<String> temperatureLiveData = viewModel.getLiveResponseData();
+
+        temperatureLiveData.observe(this, new Observer<String>()
+        {
+            public void onChanged(@Nullable String response)
+            {
+                refreshTemperature(response);
+            }
+        });
     }
 
     public void saveToSharedPreferences(String key, String value)
@@ -131,15 +148,21 @@ public class AgendaFragment extends Fragment {
 
     public void refreshTemperature(String result)
     {
-        temperature = result;
-        if (temperature != null) {
-            tempDisplay.setText("Temperature: "+kelvinToCelsius(temperature)+" C");
+        //Try/catch in case fragment no longer exists
+            try {
+                //temperature = viewModel.getLiveResponeData();
+                temperature = result;
+                if (temperature != null) {
+                    tempDisplay.setText("Temperature: " + kelvinToCelsius(temperature) + " C");
 
-            saveToSharedPreferences("temp", temperature);
-        }
-        else {
-            tempDisplay.setText("Temperature: "+kelvinToCelsius(getFromSharedPreferences("temp", "999"))+" C");
-        }
+                    saveToSharedPreferences("temp", temperature);
+                } else {
+                    tempDisplay.setText("Temperature: " + kelvinToCelsius(getFromSharedPreferences("temp", "999")) + " C");
+                }
+            } catch (NullPointerException e)
+            {
+
+            }
     }
 
     public static AgendaFragment getInstance()

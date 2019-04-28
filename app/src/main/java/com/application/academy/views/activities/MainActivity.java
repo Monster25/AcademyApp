@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Driving Academy");
+
 
         instance = this;
         viewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
@@ -52,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
         fadeBackground = findViewById(R.id.fadeBackground);
 
         topNav =  findViewById(R.id.app_toolbar);
+
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        topNav.setTitle("Driving Academy");
+
         setSupportActionBar(topNav);
-
-
-
 
         bottomNav = findViewById(R.id.bottom_navigation);
 
@@ -80,7 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public Toolbar getTopNav()
+    {
+        return topNav;
+    }
 
+    @Override
+    //inflate toolbar
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.top_navigation_items,menu);
@@ -207,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
+    //get instance of main activity
     public static MainActivity getInstance()
     {
         return instance;

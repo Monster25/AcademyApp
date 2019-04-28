@@ -18,6 +18,14 @@ public class StudentList extends Student {
         return students.get(i);
     }
 
+    public Student getStudentById(int id) {
+        Student student = null;
+        for (int i=0; i<students.size();i++)
+            if (students.get(i).getId() == id)
+                student = students.get(id);
+            return student;
+    }
+
     public void addStudent(Student student)
     {
         students.add(student);

@@ -2,6 +2,8 @@ package com.application.academy.firebase;
 
 import android.util.Log;
 
+import com.application.academy.model.Session;
+import com.application.academy.model.Student;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +20,8 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot>
     private final Query query;
     private String value = null;
     private String childKey = "";
+    private String childName = "";
+    private String objectKey = "";
     private final MyValueEventListener listener = new MyValueEventListener();
 
     public FirebaseQueryLiveData(Query query)
@@ -77,7 +81,9 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot>
                 {
                    // Log.i(LOG_TAG, childSnapshot.getKey());
                     childKey = childSnapshot.getKey();
-                    listener.onSuccess(childKey);
+                    if (childSnapshot.getValue(Student.class) != null)
+                    childName = childSnapshot.getValue(Student.class).getName();
+                    listener.onSuccess(childKey, childName);
                 }
             }
 

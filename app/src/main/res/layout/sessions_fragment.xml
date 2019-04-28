@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.activities.MainActivity">
+    tools:context=".views.activities.DateActivity">
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,7 +16,7 @@
     android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <TextView
-        android:id="@+id/noStudent"
+        android:id="@+id/noSession"
         android:layout_width="wrap_content"
         android:layout_height="157dp"
         android:layout_marginStart="8dp"
@@ -24,7 +24,7 @@
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:gravity="center_vertical|right"
-        android:text="Student list is empty! Use the plus button to add a student!"
+        android:text="Session list is empty! Use the plus button to add a session!"
         android:textAlignment="center"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
