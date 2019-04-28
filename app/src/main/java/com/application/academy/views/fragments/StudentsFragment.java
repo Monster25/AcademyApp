@@ -10,18 +10,15 @@ import com.application.academy.R;
 import com.application.academy.model.Student;
 import com.application.academy.model.StudentList;
 import com.application.academy.viewmodel.StudentViewModel;
-import com.application.academy.views.MainActivity;
+import com.application.academy.views.activities.MainActivity;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Calendar;
 
 public class StudentsFragment extends Fragment {
 

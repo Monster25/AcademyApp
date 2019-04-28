@@ -7,9 +7,4 @@
         android:icon="@mipmap/ic_add"
         app:showAsAction="ifRoom"
         />
-    <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
-        android:icon="@mipmap/ic_agenda"
-        app:showAsAction="never"/>
 </menu>

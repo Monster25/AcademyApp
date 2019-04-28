@@ -3,16 +3,13 @@ package com.application.academy.views.fragments;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.academy.R;
 import com.application.academy.model.Student;
 import com.application.academy.model.StudentList;
-import com.application.academy.views.MainActivity;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;

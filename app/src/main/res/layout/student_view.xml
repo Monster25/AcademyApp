@@ -8,7 +8,7 @@
     android:layout_margin="3dp"
     android:layout_height="80dp"
     android:background="#e4e4e4"
-    tools:context=".views.MainActivity">
+    tools:context=".views.activities.MainActivity">
 
     <TextView
         android:id="@+id/student_name"

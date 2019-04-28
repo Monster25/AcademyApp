@@ -1,6 +1,7 @@
 package com.application.academy.views.fragments;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.application.academy.R;
 import com.application.academy.viewmodel.StudentViewModel;
-import com.application.academy.views.MainActivity;
+import com.application.academy.views.activities.MainActivity;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -58,11 +59,15 @@ public class AddStudentFragment extends Fragment {
             public void onClick(View v) {
                 if (studentName.getText().toString().matches(""))
                 {
-                    Toast.makeText(getActivity(),"Please enter a name.", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getActivity(),"Please enter a name.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_VERTICAL, 0, -450);
+                    toast.show();
                 }
                 else if (sessions.getText().toString().matches(""))
                 {
-                    Toast.makeText(getActivity(), "Please enter a number of sessions.", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getActivity(), "Please enter a number of sessions.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_VERTICAL, 0, -450);
+                    toast.show();
                 }
                 else {
                     try {
@@ -75,12 +80,15 @@ public class AddStudentFragment extends Fragment {
                     studentName.setText("");
                     paid.setChecked(false);
                     sessions.setText("");
+
+
                     //Hide Keyboard
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(),0);
                 //Unfade background and remove current fragment
                     ((MainActivity) getActivity()).unFadeBackground();
                     getFragmentManager().beginTransaction().remove(AddStudentFragment.this).commit();
+
                 }
             }
         });

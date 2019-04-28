@@ -11,8 +11,6 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import java.util.HashMap;
-
 public class FirebaseQueryLiveData extends LiveData<DataSnapshot>
 {
     private static final String LOG_TAG = "FirebaseQueryLiveData";
@@ -67,7 +65,7 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot>
         }
     }
 
-    public void getChildKeyByValue(String orderBy, int equalTo, final OnGetDataListener listener)
+    public void getChildKeyByValue(String orderBy, int equalTo, final FirebaseSingleDataListener listener)
     {
         listener.onStart();
         childKey = "";
@@ -89,12 +87,5 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot>
             }
         });
     }
-
-    //Return the actual key
-    public String getChildKey()
-    {
-        return childKey;
-    }
-
 
 }

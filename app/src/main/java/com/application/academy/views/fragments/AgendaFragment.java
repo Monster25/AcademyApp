@@ -1,43 +1,41 @@
 package com.application.academy.views.fragments;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
-import com.application.academy.firebase.FirebaseAdapter;
 import com.application.academy.R;
-import com.application.academy.model.Student;
-import com.application.academy.model.StudentList;
 import com.application.academy.viewmodel.StudentViewModel;
-import com.application.academy.views.MainActivity;
+import com.application.academy.views.activities.DateActivity;
+import com.application.academy.views.activities.MainActivity;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
-import java.util.Calendar;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class AgendaFragment extends Fragment {
-    Button sendButton, removeButton, setButton;
-    EditText studentName, sessionNumbers, studentId, studentName2, sessionNumbers2;
-    CheckBox paid, paid2;
-    TextView example, example2, example3;
+
+    StudentViewModel viewModel;
+    String temperature;
+    TextView tempDisplay;
+    CalendarView calendarView;
+    public static AgendaFragment instance;
 
     public static final String KEY_ITEM = "unique_key";
     public static final String KEY_INDEX = "index_key";
-    private String mTime;
-
-    private StudentList studentList;
-    private int lastId = -1;
-    private FirebaseAdapter adapter;
-    private StudentViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -48,83 +46,104 @@ public class AgendaFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        //Quick connection no Async task for quick testing
+    //    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+      //  StrictMode.setThreadPolicy(policy);
+        instance = this;
         viewModel = ((MainActivity) getActivity()).getViewModel();
         //Interactable UI assignments
-        /*
-        studentName = view.findViewById(R.id.nameField);
-        sessionNumbers = view.findViewById(R.id.sessionNumbers);
-        paid = view.findViewById(R.id.paid);
-        sendButton = view.findViewById(R.id.addButton);
-        example = view.findViewById(R.id.example);
-        example2 = view.findViewById(R.id.example2);
-        example3 = view.findViewById(R.id.example3);
-        removeButton = view.findViewById(R.id.removeButton);
-        studentId = view.findViewById(R.id.studentId);
-        setButton = view.findViewById(R.id.setButton);
-        studentName2 = view.findViewById(R.id.nameField2);
-        sessionNumbers2 = view.findViewById(R.id.sessionNumbers2);
-        paid2 = view.findViewById(R.id.paid2);
+        tempDisplay = view.findViewById(R.id.temp);
+        calendarView = view.findViewById(R.id.calendarView);
 
-
-        LiveData<Student> studentLiveData = viewModel.getStudentLiveData();
-
-        studentLiveData.observe(this, new Observer<Student>()
-        {
-            public void onChanged(@Nullable Student student)
-            {
-                if (student!=null)
-                {
-                    studentList = viewModel.getStudentList();
-                  //  lastId = studentList.getLastStudent().getId();
-
-                    //button.setText(studentList.getStudent(0).getName());
-                    // example.setText(studentList.getStudent(0).getName());
-                    // example2.setText(studentList.getStudent(1).getName());
-                    // example3.setText(studentList.getStudent(2).getName());
-                    // example.setText(dataSnapshot.child("Student1").getValue(Student.class).getName());
-                }
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            String date = dayOfMonth + "/" + month + "/" + year;
+            Log.d("CalendarActivity", "onSelectedDayChange: dd/mm/yyyy" + date);
+            Intent intent = new Intent(MainActivity.getInstance(),DateActivity.class);
+            intent.putExtra("date", date);
+            startActivity(intent);
             }
         });
-        */
-        /*
-        //add student
-        sendButton.setOnClickListener(new View.OnClickListener() {
+
+        //Get current temperature in Iasi Romania every time the fragment is created
+        //API call
+        startRetrievingTemperature();
+
+        tempDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Student student = new Student(studentName.getText().toString(), paid.isChecked(), Integer.parseInt(sessionNumbers.getText().toString()), lastId+1);
-                viewModel.addStudent(studentName.getText().toString(), paid.isChecked(), Integer.parseInt(sessionNumbers.getText().toString()), lastId+1);
-                //myRef.child("Student"+student.getId()).setValue(student);
-                studentName.setText("");
-                paid.setChecked(false);
-                sessionNumbers.setText("");
+                startRetrievingTemperature();
             }
         });
 
+    }
 
-        //Remove student
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.removeStudent("Student"+studentId.getText().toString());
-                // myRef.child("Student"+studentId.getText()).removeValue();
-                studentId.setText("");
-            }
-        });
+    public void saveToSharedPreferences(String key, String value)
+    {
+        //Get SharedPreference
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //Get editor
+        SharedPreferences.Editor editor = prefs.edit();
+        //Store value
+        editor.putString(key,temperature);
+        //Apply changes
+        editor.apply();
+    }
 
-        //Set Student
-        setButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //int id = Integer.parseInt(studentId.getText().toString());
-                viewModel.setStudent(studentName2.getText().toString(), paid2.isChecked(), Integer.parseInt(sessionNumbers2.getText().toString()), Integer.parseInt(studentId.getText().toString()));
-                //Student student = new Student(studentName2.getText().toString(), paid2.isChecked(), Integer.parseInt(sessionNumbers2.getText().toString()), id);
-                // myRef.child("Student"+studentId.getText()).setValue(student);
-                studentId.setText("");
-                studentName2.setText("");
-                paid2.setChecked(false);
-                sessionNumbers2.setText("");
-            }
-        });
-        */
+    public String getFromSharedPreferences(String key, String defaultValue)
+    {
+        //use stored value
+        //Get SharedPreference
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //Retrieve value
+        String savedTemp = prefs.getString(key, defaultValue);
+        //Set value
+        return savedTemp;
+    }
+
+    public String kelvinToCelsius(String kelvin)
+    {
+        double kelvinValue = 273.15;
+        return String.valueOf((int)(Double.parseDouble(kelvin)-kelvinValue));
+    }
+
+    public void startRetrievingTemperature()
+    {
+        try {
+            //Iasi id = 675810
+            //Api key = 296d876d62ecdf7b528152a666071179
+            viewModel.getTemp("https://api.openweathermap.org/data/2.5/weather?id=675810&appid=296d876d62ecdf7b528152a666071179");
+        } catch (InterruptedException e) {
+            //Last cached value
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            //Last cahced value
+            e.printStackTrace();
+        }
+        catch (IOException | JSONException ex){
+            //Last cached valued
+            ex.printStackTrace();
+        }
+    }
+
+    public void refreshTemperature(String result)
+    {
+        temperature = result;
+        if (temperature != null) {
+            tempDisplay.setText("Temperature: "+kelvinToCelsius(temperature)+" C");
+
+            saveToSharedPreferences("temp", temperature);
+        }
+        else {
+            tempDisplay.setText("Temperature: "+kelvinToCelsius(getFromSharedPreferences("temp", "999"))+" C");
+        }
+    }
+
+    public static AgendaFragment getInstance()
+    {
+        return instance;
     }
 }

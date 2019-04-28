@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.application.academy.R;
 import com.application.academy.viewmodel.StudentViewModel;
-import com.application.academy.views.MainActivity;
+import com.application.academy.views.activities.MainActivity;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
